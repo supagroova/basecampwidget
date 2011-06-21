@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<script type="text/javascript" src="Scripts/prototype.js" charset="utf-8" />
+		<script type="text/javascript" src="Scripts/event-selectors.js" charset="utf-8" />
+		<script type="text/javascript" src="Scripts/scriptulous.js" charset="utf-8" />
+		<script type="text/javascript" src="Scripts/effects.js" charset="utf-8" />
+		<script type="text/javascript" src="Scripts/Basecamp.js" charset="utf-8" />
+		<script type='text/javascript' src='AppleClasses/AppleButton.js' charset='utf-8'/>
+		<script type='text/javascript' src='AppleClasses/AppleInfoButton.js' charset='utf-8'/>
+		<script type='text/javascript' src='AppleClasses/AppleAnimator.js' charset='utf-8'/>
+		<script type='text/javascript' src='AppleClasses/AppleScrollArea.js' charset='utf-8'/>
+		<script type='text/javascript' src='AppleClasses/AppleScrollbar.js' charset='utf-8'/>
+		<link rel="stylesheet" href="Basecamp.css" type="text/css" media="screen" charset="utf-8" />
+		<style type="text/css" media="screen">
+
+
+
+		</style>
+		
+	</head>
+<body>
+		<div id="front">
+			<div id="header">
+				<h1 id="title">
+					<a href="" onclick="widget.openURL('http://basecamphq.com/?referrer=fashioncache')">Basecamp</a>
+				</h1>
+				<div id="subtitle">
+					speak from afar
+				</div>
+				<div id="project_selector"></div>
+				<select id="projects" onchange="Basecamp.changeProject()"></select>
+			</div>
+			<div id="tabs">
+				<ul>
+					<li class="milestones first">
+						<a href="#" onclick="Basecamp.get_milestones()">milestones</a>
+					</li>
+					<li class="todos">
+						<a href="#" onclick="Basecamp.get_todos()">todos</a>
+					</li>
+					<li class="posts">
+						<a href="#" onclick="Basecamp.get_messages()">posts</a>
+					</li>
+					<li class="contacts last">
+						<a href="#" onclick="Basecamp.get_contacts()">contacts</a>
+					</li>
+				</ul>
+			</div>
+			<div id="container">
+				<div id="body">
+					<div id="loading" style="display:none;">Loading...</div>
+					<div id="scroll_area">
+						<div id="content">
+
+							<!-- System Messages -->
+							<div id="error_container" style="display:none;">
+								<h1 class="error">Error:</h1>
+								<p id="error_message">URL not found.</p>
+								<p>Please setting check your settings and try again.</p>
+							</div>
+							<div id="select_a_project" style="display:none;">Select a Project</div>
+
+							<!-- Milestones -->
+							<div id="milestone_new" class="create_form" style="display:none">
+								<h1 id="new_milestone">New Milestone</h1>
+							</div>
+
+							<!-- ToDos -->
+							<div id="todo_new" class="create_form" style="display:none">
+								<h1 id="new_todo_item">New ToDo Item</h1>
+								<form accept-charset="utf-8">
+									<p><textarea>To-do item text</textarea></p>
+									<p><select><option>Who's responsible?</option></select></p>
+									<p><input type="submit" value="Add this item" /> or <a href="#" onclick="">Cancel</a></p>
+								</form>
+							</div>
+
+							<!-- Posts -->
+							<div id="post_new" class="create_form" style="display:none">
+								<h1 id="new_post">New Post</h1>
+							</div>
+
+							<!-- Contacts -->
+							<div id="new_contact" class="create_form" style="display:none">
+								<h1 id="new_contact">New Contact</h1>
+							</div>
+
+							<div id="new_form_bg" style="display:none"></div>
+							
+						</div>
+					</div>
+			    <div id="scroll_bar"></div>
+				</div>
+				<div id="new_button" style="display:none"></div>
+				<div id="info_button"></div>
+				<img id='resize' src='/System/Library/WidgetResources/resize.png' onmousedown='Basecamp.begin_resize(event);'/>
+			</div>
+		</div>
+		<div id="back">
+			<h1>Preferences</h1>
+			<p><label for="username">Username:</label>
+			<input type="text" name="username" id="username" value="your basecamp login" />
+			</p>
+			<p><label for="password">Password:</label>
+			<input type="password" name="password" id="password" value="" />
+			</p>
+			<p><label for="url">URL:</label>
+			<span id="protocol_prefix">http</span>://<input type="text" name="url" id="url" value="your basecamp URL" />
+			</p>
+			<p><label for="ssl">Use SSL:</label>
+			<input type="checkbox" value="yes" id="ssl" onchange="$('protocol_prefix').innerHTML = (this.checked) ? 'https' : 'http';">
+			</p>
+			<p><label for="refresh">Data Refresh:</label>
+			<input type="text" name="refresh" id="refresh" value="" size="2" /> minutes
+			</p>
+			<p id="api_error" class="error" style="display:none;">
+				Check your <a href="#" onclick="Basecamp.goto_acc_api()">account API is enabled</a>
+			</p>
+			<!--
+			<div id="backGrowl">
+				<input type="checkbox" value="yes" id="prefGrowl">
+				<label for="prefGrowl" onclick="$('prefGrowl').checked = !$('prefGrowl').checked">
+					Use Growl to show reminders
+				</label>
+			</div>
+			-->
+			<div id="credits">
+				Brought to you by:
+			  <a href="#" onclick="widget.openURL('http://kennedia.com')">kennedia.com</a>
+			</div>
+			<div id="37signals">
+				<a href="#" onclick="widget.openURL('http://basecamphq.com/?referrer=fashioncache')">Basecamp </a>is a product of <a href="#" onclick="widget.openURL('http://37signals.com')">37signals</a>
+			</div>
+			<div id="done_button"></div>
+		</div>
+	</body>
+</html>
